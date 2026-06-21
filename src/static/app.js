@@ -60,11 +60,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response.ok) {
         messageDiv.textContent = result.message;
-        messageDiv.className = "success";
+        messageDiv.className = "message success";
         signupForm.reset();
       } else {
-        messageDiv.textContent = result.detail || "An error occurred";
-        messageDiv.className = "error";
+        const detail = result.detail || "An error occurred";
+        let friendly = detail;
+        if (detail === "Student already signed up for this activity") {
+          friendly = "You're already signed up for that activity.";
+        } else if (detail === "Activity is full") {
+          friendly = "Sorry — this activity is full.";
+        } else if (detail === "Activity not found") {
+          friendly = "Selected activity not found.";
+        }
+
+        messageDiv.textContent = friendly;
+        messageDiv.className = "message error";
       }
 
       messageDiv.classList.remove("hidden");
